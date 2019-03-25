@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "lib": ["es2017"],
+    "outDir": ".build",
+    "strict": true
+  },
+  "exclude": [".build", "coverage", "node_modules", "**/*.test.ts"],
+  "include": ["index.ts", "src"]
+}
