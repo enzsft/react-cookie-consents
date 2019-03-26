@@ -8,6 +8,12 @@
     "outDir": ".build",
     "strict": true
   },
-  "exclude": [".build", "coverage", "node_modules", "**/*.test.ts"],
+  "exclude": [
+    ".build",
+    "coverage",
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ],
   "include": ["index.ts", "src"]
 }
