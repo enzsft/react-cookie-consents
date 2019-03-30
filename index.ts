@@ -1,1 +1,1 @@
-export { TestComp } from "./src/test-comp";
+export * from "./src/cookie-consent-provider";
