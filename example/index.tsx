@@ -1,59 +1,47 @@
 import React, { SFC, ReactElement } from "react";
 import ReactDOM from "react-dom";
 import {
-  CookieConsentProvider,
-  useCookieConsent,
-} from "../src/cookie-consent-provider";
+  CookieConsentsProvider,
+  useCookieConsents,
+} from "../src/cookie-consents-provider";
 
 const CookieBanner: SFC<any> = (): ReactElement => {
-  const cookieConsent = useCookieConsent();
+  const cookieConsents = useCookieConsents();
   return (
     <>
       <h2>Add cookie consents:</h2>
-      <button
-        type="button"
-        onClick={() => cookieConsent.addConsent("analytics")}
-      >
+      <button type="button" onClick={() => cookieConsents.add("analytics")}>
         Analytics
       </button>
-      <button
-        type="button"
-        onClick={() => cookieConsent.addConsent("advertising")}
-      >
+      <button type="button" onClick={() => cookieConsents.add("advertising")}>
         Advertising
       </button>
-      <button
-        type="button"
-        onClick={() => cookieConsent.addConsent("third-party")}
-      >
+      <button type="button" onClick={() => cookieConsents.add("third-party")}>
         3rd Party
       </button>
       <h2>Remove cookie consents:</h2>
-      <button
-        type="button"
-        onClick={() => cookieConsent.removeConsent("analytics")}
-      >
+      <button type="button" onClick={() => cookieConsents.remove("analytics")}>
         Analytics
       </button>
       <button
         type="button"
-        onClick={() => cookieConsent.removeConsent("advertising")}
+        onClick={() => cookieConsents.remove("advertising")}
       >
         Advertising
       </button>
       <button
         type="button"
-        onClick={() => cookieConsent.removeConsent("third-party")}
+        onClick={() => cookieConsents.remove("third-party")}
       >
         3rd Party
       </button>
       <h2>Clear cookie consents:</h2>
-      <button type="button" onClick={() => cookieConsent.clearConsents()}>
+      <button type="button" onClick={() => cookieConsents.clear()}>
         Clear
       </button>
       <h2>You have consented to the following cookies:</h2>
       <ul>
-        {cookieConsent.getConsents().map(c => (
+        {cookieConsents.get().map(c => (
           <li key={c}>{c}</li>
         ))}
       </ul>
@@ -65,9 +53,9 @@ const App: SFC<any> = (): ReactElement => {
   return (
     <>
       <h1>@enzsft/react-cookie-content</h1>
-      <CookieConsentProvider cookieName="cookieConsent" expires={365}>
+      <CookieConsentsProvider cookieName="cookieConsents" expires={365}>
         <CookieBanner />
-      </CookieConsentProvider>
+      </CookieConsentsProvider>
     </>
   );
 };

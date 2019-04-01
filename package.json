@@ -1,7 +1,7 @@
 {
-  "name": "@enzsft/react-cookie-consent",
+  "name": "@enzsft/react-cookie-consents",
   "version": "1.0.0-alpha.1",
-  "description": "Handle cookie consent with ease. 😲",
+  "description": "Handle cookie consents with ease. 😲",
   "keywords": [
     "cookies",
     "react",
@@ -10,7 +10,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/enzsft/react-cookie-consent"
+    "url": "https://github.com/enzsft/react-cookie-consents"
   },
   "author": "Enzyme Software",
   "scripts": {

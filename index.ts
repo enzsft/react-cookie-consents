@@ -1,1 +1,1 @@
-export * from "./src/cookie-consent-provider";
+export * from "./src/cookie-consents-provider";

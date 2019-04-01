@@ -2,9 +2,10 @@ import React, { ReactElement, SFC } from "react";
 import { render, fireEvent } from "react-testing-library";
 import Cookies from "js-cookie";
 import {
-  CookieConsentProvider,
-  useCookieConsent,
-} from "../cookie-consent-provider";
+  CookieConsentsProvider,
+  useCookieConsents,
+} from "../cookie-consents-provider";
+import { persistConsentsInCookie, readConsentsFromCookie } from "../cookie";
 
 interface TestHarnessProps {
   addConsentButtonTestId: string;
@@ -21,20 +22,20 @@ const TestHarness: SFC<TestHarnessProps> = ({
   consentToRemove,
   removeConsentButtonTestId,
 }): ReactElement => {
-  const cookieConsent = useCookieConsent();
+  const cookieConsent = useCookieConsents();
 
-  const consents = cookieConsent.getConsents();
+  const consents = cookieConsent.get();
 
   const addConsent = (): void => {
-    cookieConsent.addConsent(consentToAdd);
+    cookieConsent.add(consentToAdd);
   };
 
   const clearConsents = (): void => {
-    cookieConsent.clearConsents();
+    cookieConsent.clear();
   };
 
   const removeConsent = (): void => {
-    cookieConsent.removeConsent(consentToRemove);
+    cookieConsent.remove(consentToRemove);
   };
 
   // Render out list of current consents to query in tests
@@ -82,9 +83,9 @@ describe("CookieConsentProvider", () => {
 
   it("should render children", () => {
     const { getByTestId } = render(
-      <CookieConsentProvider {...providerProps}>
+      <CookieConsentsProvider {...providerProps}>
         <div data-testid="test" />
-      </CookieConsentProvider>,
+      </CookieConsentsProvider>,
     );
 
     getByTestId("test");
@@ -93,14 +94,12 @@ describe("CookieConsentProvider", () => {
   it("should load consents from existing cookie", () => {
     // Create a cookie before the provider
     const existingConsents = [consentA, consentB];
-    Cookies.set(cookieName, JSON.stringify(existingConsents), {
-      expires: 365,
-    });
+    persistConsentsInCookie(cookieName, existingConsents, expires);
 
     const { getByText } = render(
-      <CookieConsentProvider {...providerProps}>
+      <CookieConsentsProvider {...providerProps}>
         <TestHarness {...testHarnessProps} />
-      </CookieConsentProvider>,
+      </CookieConsentsProvider>,
     );
 
     // All consents should be printed out in test harness
@@ -111,9 +110,9 @@ describe("CookieConsentProvider", () => {
 
   it("should add a new consent and update the cookie", () => {
     const { getByText, getByTestId } = render(
-      <CookieConsentProvider {...providerProps}>
+      <CookieConsentsProvider {...providerProps}>
         <TestHarness {...testHarnessProps} />
-      </CookieConsentProvider>,
+      </CookieConsentsProvider>,
     );
 
     // Harness provides a button to add a new consent
@@ -123,8 +122,7 @@ describe("CookieConsentProvider", () => {
     getByText(consentToAdd);
 
     // Should have written the cookie
-    //Cookies.set(cookieName, JSON.stringify([consentToAdd]));
-    const consents = Cookies.getJSON(cookieName);
+    const consents = readConsentsFromCookie(cookieName);
 
     expect(consents).toEqual([consentToAdd]);
   });
@@ -132,14 +130,12 @@ describe("CookieConsentProvider", () => {
   it("should remove consent and update the cookie", () => {
     // Create a cookie before the provider
     const existingConsents = [consentA, consentB, consentToRemove];
-    Cookies.set(cookieName, JSON.stringify(existingConsents), {
-      expires: 365,
-    });
+    persistConsentsInCookie(cookieName, existingConsents, expires);
 
     const { getByTestId, getByText, queryByText } = render(
-      <CookieConsentProvider {...providerProps}>
+      <CookieConsentsProvider {...providerProps}>
         <TestHarness {...testHarnessProps} />
-      </CookieConsentProvider>,
+      </CookieConsentsProvider>,
     );
 
     // Harness provides a button to remove a consent
@@ -156,14 +152,12 @@ describe("CookieConsentProvider", () => {
   it("should clear all consents and update the cookie", () => {
     // Create a cookie before the provider
     const existingConsents = [consentA, consentB];
-    Cookies.set(cookieName, JSON.stringify(existingConsents), {
-      expires: 365,
-    });
+    persistConsentsInCookie(cookieName, existingConsents, expires);
 
     const { getByTestId, queryByText } = render(
-      <CookieConsentProvider {...providerProps}>
+      <CookieConsentsProvider {...providerProps}>
         <TestHarness {...testHarnessProps} />
-      </CookieConsentProvider>,
+      </CookieConsentsProvider>,
     );
 
     // Harness provides a button to remove a consent
