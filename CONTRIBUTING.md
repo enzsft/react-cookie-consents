@@ -11,6 +11,7 @@ Before you start any work we recommend adding an issue so the changes can be dis
 | Script      | Description                                          |
 | ----------- | ---------------------------------------------------- |
 | build       | Builds the package into `/.build`                    |
+| example     | Run the example app                                  |
 | lint        | Lints all typescript                                 |
 | npm-publish | Publishes to NPM (you won't be able to publish this) |
 | test        | Run all tests                                        |

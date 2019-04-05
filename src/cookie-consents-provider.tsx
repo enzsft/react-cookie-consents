@@ -52,7 +52,7 @@ export interface CookieConsentsProviderProps {
   /**
    * Number of days the cookie is valid for
    */
-  expires: number;
+  expiryInDays: number;
 }
 
 /**
@@ -70,7 +70,7 @@ export const CookieConsentsContext: Context<Consents | null> = createContext<Con
 export const CookieConsentsProvider: SFC<CookieConsentsProviderProps> = ({
   children,
   cookieName,
-  expires,
+  expiryInDays,
 }): ReactElement => {
   const [currentConsents, setCurrentConsents]: [
     string[],
@@ -78,7 +78,7 @@ export const CookieConsentsProvider: SFC<CookieConsentsProviderProps> = ({
   ] = useState(readConsentsFromCookie(cookieName));
 
   const updateConsents = (newConsents: string[]): void => {
-    persistConsentsInCookie(cookieName, newConsents, expires);
+    persistConsentsInCookie(cookieName, newConsents, expiryInDays);
     setCurrentConsents(newConsents);
   };
 

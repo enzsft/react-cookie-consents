@@ -54,9 +54,9 @@ const TestHarness: SFC<TestHarnessProps> = ({
   );
 };
 
-describe("CookieConsentProvider", () => {
+describe("CookieConsentsProvider", () => {
   const cookieName = "cookie-consent";
-  const expires = 365;
+  const expiryInDays = 365;
   const consentA = "consentA";
   const consentB = "consentB";
   const consentToAdd = "consentToAdd";
@@ -66,7 +66,7 @@ describe("CookieConsentProvider", () => {
   const removeConsentButtonTestId = "removeConsentButtonTestId";
   const providerProps = {
     cookieName,
-    expires,
+    expiryInDays,
   };
   const testHarnessProps = {
     consentToAdd,
@@ -94,7 +94,7 @@ describe("CookieConsentProvider", () => {
   it("should load consents from existing cookie", () => {
     // Create a cookie before the provider
     const existingConsents = [consentA, consentB];
-    persistConsentsInCookie(cookieName, existingConsents, expires);
+    persistConsentsInCookie(cookieName, existingConsents, expiryInDays);
 
     const { getByText } = render(
       <CookieConsentsProvider {...providerProps}>
@@ -130,7 +130,7 @@ describe("CookieConsentProvider", () => {
   it("should remove consent and update the cookie", () => {
     // Create a cookie before the provider
     const existingConsents = [consentA, consentB, consentToRemove];
-    persistConsentsInCookie(cookieName, existingConsents, expires);
+    persistConsentsInCookie(cookieName, existingConsents, expiryInDays);
 
     const { getByTestId, getByText, queryByText } = render(
       <CookieConsentsProvider {...providerProps}>
@@ -152,7 +152,7 @@ describe("CookieConsentProvider", () => {
   it("should clear all consents and update the cookie", () => {
     // Create a cookie before the provider
     const existingConsents = [consentA, consentB];
-    persistConsentsInCookie(cookieName, existingConsents, expires);
+    persistConsentsInCookie(cookieName, existingConsents, expiryInDays);
 
     const { getByTestId, queryByText } = render(
       <CookieConsentsProvider {...providerProps}>

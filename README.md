@@ -15,9 +15,13 @@
 </div>
 <hr />
 
-Building cookie consent functionality should be easy. We've written **@enzsft/react-cookie-consents** to ensure you can get up and running as quickly as possible. It provides a convenient API to write and read cookie consents.
+Building cookie banners should be easy. We've written **@enzsft/react-cookie-consents** to ensure you can get up and running as quickly as possible. It provides a convenient API to write and read cookie consents.
+
+**@enzsft/react-cookie-consents uses [React Hooks](https://reactjs.org/docs/hooks-overview.html) so requires at least React@16.8.0**
 
 ## Motivation 🧐
+
+The React ecosystem was lacking a hooks based cookie consents API when this library was first required.
 
 ## Getting started 🏎
 
@@ -31,7 +35,84 @@ yarn add @enzsft/react-cookie-consents
 npm install @enzsft/react-cookie-consents
 ```
 
+### 2. Create a cookie banner
+
+The following example renders a cookie banner but only if consent has not already been given.
+
+```jsx
+import { React } from "react";
+import ReactDOM from "react-dom";
+import {
+  CookieConsentsProvider,
+  useCookieConsents,
+} from "@enzsft/react-cookie-consents";
+
+const CookieBanner = () => {
+  const cookieConsents = useCookieConsents();
+
+  if (cookieConsents.get().length > 0) {
+    return null;
+  }
+
+  return (
+    <>
+      <span>
+        We use cookies to help give you the best experience on our site. By
+        continuing you agree to our use of cookies.
+      </span>
+      <button type="button" onClick={() => cookieConsents.add("analytics")}>
+        Accept and close
+      </button>
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <CookieConsentsProvider cookieName="cookieConsents" expiryInDays={365}>
+      <CookieBanner />
+    </CookieConsentsProvider>
+  );
+};
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+
 ## API 🌳
+
+### CookieConsentsProvider
+
+Configure the cookie name and when it will expire.
+
+```jsx
+<CookieConsentsProvider cookieName="cookieConsents" expiryInDays={365}>
+  {children}
+</CookieConsentsProvider>
+```
+
+### useCookieConsents
+
+React Hook that returns a cookie consent object to read/write cookie consents. Components that use this must be nested within a `CookieConsentsProvider` as it uses React Context.
+
+Cookie consents are stores in a cookie. When you add, remove or clear consents the cookie is updated.
+
+```jsx
+const Comp = () => {
+  const cookieConsents = useCookieConsents();
+
+  // Get all cookie consents
+  const allConsents = cookieConsents.get();
+
+  // Add a new consent, silently ignores duplicates
+  cookieConsents.add("consent name");
+
+  // Remove a consent
+  cookieConsents.remove("consent name");
+
+  // Remove all consents
+  cookieConsents.clear();
+};
+```
 
 ## Built with TypeScript with 💖
 

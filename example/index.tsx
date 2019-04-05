@@ -1,9 +1,6 @@
 import React, { SFC, ReactElement } from "react";
 import ReactDOM from "react-dom";
-import {
-  CookieConsentsProvider,
-  useCookieConsents,
-} from "../src/cookie-consents-provider";
+import { CookieConsentsProvider, useCookieConsents } from "..";
 
 const CookieBanner: SFC<any> = (): ReactElement => {
   const cookieConsents = useCookieConsents();
@@ -53,7 +50,7 @@ const App: SFC<any> = (): ReactElement => {
   return (
     <>
       <h1>@enzsft/react-cookie-content</h1>
-      <CookieConsentsProvider cookieName="cookieConsents" expires={365}>
+      <CookieConsentsProvider cookieName="cookieConsents" expiryInDays={365}>
         <CookieBanner />
       </CookieConsentsProvider>
     </>
